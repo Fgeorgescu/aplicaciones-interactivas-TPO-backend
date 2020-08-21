@@ -1,0 +1,19 @@
+{
+  "name": "aplicaciones-interactivas-tpo-backend",
+  "version": "1.0.0",
+  "description": "Backend para TPO - grupo 11",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fgeorgescu/aplicaciones-interactivas-TPO-backend.git"
+  },
+  "author": "Franco Georgescu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Fgeorgescu/aplicaciones-interactivas-TPO-backend/issues"
+  },
+  "homepage": "https://github.com/Fgeorgescu/aplicaciones-interactivas-TPO-backend#readme"
+}
