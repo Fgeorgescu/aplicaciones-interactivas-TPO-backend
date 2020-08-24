@@ -30,6 +30,8 @@ const mockUser = (id) => {
 let historiaMock = JSON.parse(fs.readFileSync('./mocks/historiaClinica/historiaClinica.json'));
 let consultasMock = JSON.parse(fs.readFileSync('./mocks/historiaClinica/historiaConsultas.json'));
 
+
+require('./routes')(app);
 app.post('/users', (req, resp) => {
     let body = bodyParser.json(req.body)
     console.log(req.body)
