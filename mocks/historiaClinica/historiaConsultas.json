@@ -1,0 +1,30 @@
+[
+    {
+        "id": 4,
+        "date": "12/01/2020",
+        "reason": "Validación datos personales",
+        "doctor": "Juan Molino",
+        "detail": "Corrección nombre de los padres"
+    },
+    {
+        "id": 3,
+        "date": "12/01/2020",
+        "reason": "Validación datos personales",
+        "doctor": "Juana Gonzalez",
+        "detail": "Se requiere confirmación de datos"
+    },
+    {
+        "id": 2,
+        "date": "11/01/2020",
+        "reason": "Dolor abdominal intenso",
+        "doctor": "Patricia Guerrero",
+        "detail": "Se encuentran irregularidades en el exámen físico, presión muy baja. Se recomienda descanso por cuatro días"
+    },
+    {
+        "id": 1,
+        "date": "10/01/2020",
+        "reason": "Dolor Cabeza",
+        "doctor": "Juan Molinos",
+        "detail": "No se encuentran irregularidades en el exámen físico, presión relativamente baja. Se recomienda descanso por dos días"
+    }
+]
