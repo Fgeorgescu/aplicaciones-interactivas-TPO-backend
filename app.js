@@ -12,6 +12,7 @@ const fs = require('fs');
 
 app.use(logger('dev'));
 
+/** This is a description of the foo function. */
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -36,12 +37,12 @@ app.post('/users', (req, resp) => {
 }
 );
 
-app.get('/users/:id/historia', (req, resp) => resp.status(200).send(historiaMock));
-app.get('/users/:id/consultas', (req, resp) => resp.status(200).send(consultasMock));
-app.get('/users/:id', (req, resp) => resp.status(200).send(mockUser(req.params.id)));
+app.get('/users/:id', (req, resp) => resp.status(200).json(mockUser(req.params.id)));
+app.get('/users/:id/historia', (req, resp) => resp.status(200).json(historiaMock));
+app.get('/users/:id/consultas', (req, resp) => resp.status(200).json(consultasMock));
 
-app.get('*', (req, resp) => resp.status(200).send({
-    message: 'I\'M WALKING HEREEEEEE'
+app.get('*', (req, resp) => resp.status(404).json({
+    message: 'RESOURCE NOT FOUND'
 }));
 
 
