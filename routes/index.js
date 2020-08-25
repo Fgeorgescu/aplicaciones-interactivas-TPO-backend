@@ -1,10 +1,9 @@
-const userController = require('../controllers').users;
-
+/**
+ * This routes all the diferent routes
+ * @param {Application} app 
+ */
 module.exports = (app) => {
-    app.get("/api", (req, res) => res.status(200).send({
-        message: "Estas en el router :D"
-    }))
-
-    //API Services Users
-    app.get('/api/users/:id', userController.getUserByDNI);
+    require('./users')(app);
+    require('./especialidades')(app);
+    require('./roles')(app);
 }

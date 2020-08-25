@@ -32,6 +32,7 @@ let consultasMock = JSON.parse(fs.readFileSync('./mocks/historiaClinica/historia
 
 
 require('./routes')(app);
+
 app.post('/users', (req, resp) => {
     let body = bodyParser.json(req.body)
     console.log(req.body)
