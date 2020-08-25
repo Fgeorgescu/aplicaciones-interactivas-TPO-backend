@@ -1,32 +1,57 @@
-const Sequelide =require('sequelize');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+
 const empleados = require('../models').empleados;
+const roles = require('../models').roles;
+const especialidades = require('../models').especialidades;
 
 module.exports = {
 
     /**
-     * Creamos un nuevo ususario
+     * Creamos un nuevo empleado
      */
     create(req, res) {
-        return empleados
-            .create({
-                nombre: req.body.nombre,
-                apellido: req.body.apellido,
-                dni: req.body.dni,
-                fecha_nacimiento: req.body.fecha_nacimiento,
-                telefono: req.body.telefono,
-                mail: req.body.mail,
-                contraseña_hash: req.body.contraseña_hash,
-                rol_id: req.body.rol_id,
-                matricula: req.body.matricula,
-                especialidad_id: req.body.especialidad_id,
-                turnos: 1
+        const responseRol = roles.findOne({
+            where: {
+                rol: req.body.rol
+            }
+        })
+
+        const responseEspecialidad = especialidades.findOne({
+            where: {
+                nombre: req.body.especialidad
+            }
+        })
+        console.log(`promise`)
+
+        Promise
+            .all([responseRol, responseEspecialidad])
+            .then(responses => {
+                return empleados
+                    .create({
+                        nombre: req.body.nombre,
+                        apellido: req.body.apellido,
+                        dni: req.body.dni,
+                        fecha_nacimiento: req.body.fecha_nacimiento,
+                        telefono: req.body.telefono,
+                        mail: req.body.mail,
+                        contraseña_hash: req.body.contraseña_hash,
+                        rol_id: responses[0].id,
+                        matricula: req.body.matricula,
+                        especialidad_id: responses[1].id,
+                        turnos: 1
+                    })
+                    .then(empleados => res.status(201).send(empleados))
+                    .catch(error => res.status(400).send(error))
             })
-            .then(empleados => res.status(201).send(empleados))
             .catch(error => res.status(400).send(error))
+
+
+
     },
 
     /**
-     * Listamos a los ususarios
+     * Listamos a los empleados
      */
     list(_, res) {
         return empleados
@@ -36,7 +61,7 @@ module.exports = {
     },
 
     /**
-     * Buscar por id
+     * Buscar por rol
      */
     findById(req, res) {
         return empleados
