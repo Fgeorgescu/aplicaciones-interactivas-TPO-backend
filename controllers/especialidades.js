@@ -1,5 +1,5 @@
 const Sequelide =require('sequelize');
-const especialidad = require('../models').especialidad;
+const especialidades = require('../models').especialidades;
 
 module.exports = {
 
@@ -8,12 +8,12 @@ module.exports = {
      */
     create(req, res) {
         console.log(`Acá creamos una especialidad: \n nombre: ${req.body.nombre} \n desc: ${req.body.descripcion}`);
-        return especialidad
+        return especialidades
             .create({
                 nombre: req.body.nombre,
                 descripcion: req.body.descripcion.replace(/[\u0800-\uFFFF]/g, '')
             })
-            .then(especialidad => res.status(201).send(especialidad))
+            .then(especialidades => res.status(201).send(especialidades))
             .catch(error => res.status(400).send(error))
     },
 
@@ -22,9 +22,9 @@ module.exports = {
      */
     list(_, res) {
         console.log("Listamos las especialidades")
-        return especialidad
+        return especialidades
             .findAll({})
-            .then(especialidad => res.status(200).send(especialidad))
+            .then(especialidades => res.status(200).send(especialidades))
             .catch(error => res.status(400).send(error))
     },
 
@@ -33,13 +33,13 @@ module.exports = {
      */
     findById(req, res) {
         console.log(`Buscamos por ID: ${req.params.id}`)
-        return especialidad
+        return especialidades
             .findAll({
                 where: {
                     id: req.params.id
                 }
             })
-            .then(especialidad => res.status(200).send(especialidad))
+            .then(especialidades => res.status(200).send(especialidades))
             .catch(error => res.status(400).send(error))
     }
 }
