@@ -1,4 +1,6 @@
 const express = require('express');
+const cors = require('cors');
+
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 
@@ -11,8 +13,8 @@ const fs = require('fs');
 
 
 app.use(logger('dev'));
+app.use(cors())
 
-/** This is a description of the foo function. */
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 
