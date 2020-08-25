@@ -58,6 +58,6 @@ app.get('*', (req, resp) => resp.status(404).json({
 const port = parseInt(process.env.PORT, 10) || 8000;
 
 const server = http.createServer(app);
-server.listen(port);
+server.listen(port, () => {console.log("Up and running")});
 
 module.exports = app;
