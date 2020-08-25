@@ -6,4 +6,6 @@ module.exports = (app) => {
     require('./users')(app);
     require('./especialidades')(app);
     require('./roles')(app);
+    require('./empleados')(app);
+
 }

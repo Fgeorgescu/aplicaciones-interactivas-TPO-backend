@@ -1,5 +1,5 @@
 const Sequelide =require('sequelize');
-const rol = require('../models').rol;
+const roles = require('../models').roles;
 
 module.exports = {
 
@@ -7,11 +7,11 @@ module.exports = {
      * Creamos un nuevo ususario
      */
     create(req, res) {
-        return rol
+        return roles
             .create({
                 rol: req.body.rol,
             })
-            .then(rol => res.status(201).send(rol))
+            .then(roles => res.status(201).send(roles))
             .catch(error => res.status(400).send(error))
     },
 
@@ -20,9 +20,9 @@ module.exports = {
      */
     list(_, res) {
         console.log("Listamos las especialidades")
-        return rol
+        return roles
             .findAll({})
-            .then(rol => res.status(200).send(rol))
+            .then(roles => res.status(200).send(roles))
             .catch(error => res.status(400).send(error))
     },
 
@@ -31,13 +31,13 @@ module.exports = {
      */
     findById(req, res) {
         console.log(`Buscamos por ID: ${req.params.id}`)
-        return rol
+        return roles
             .findAll({
                 where: {
                     id: req.params.id
                 }
             })
-            .then(rol => res.status(200).send(rol))
+            .then(roles => res.status(200).send(roles))
             .catch(error => res.status(400).send(error))
     }
 }
