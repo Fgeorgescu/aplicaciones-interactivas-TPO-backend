@@ -5,6 +5,7 @@ module.exports = {
       id: {
         allowNull: false,
         autoIncrement: true,
+        unique: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
@@ -14,6 +15,11 @@ module.exports = {
       },
       apellido: {
         allowNull: false,
+        type: Sequelize.STRING
+      },
+      username: {
+        allowNull: false,
+        unique: true,
         type: Sequelize.STRING
       },
       dni: {
@@ -37,29 +43,22 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      contraseña_hash: {
+      password: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      rol_id: {
+      rol: {
         allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "roles",
-          key: "id"
-        }
+        defaultValue: "secretaria",
+        type: Sequelize.STRING
       },
       matricula: {
         allowNull: true,
         type: Sequelize.INTEGER
       },
-      especialidad_id: {
+      especialidad: {
         allowNull: true,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "especialidades",
-          key: "id"
-        }
+        type: Sequelize.STRING
       },
       turnos: {
         allowNull: true,

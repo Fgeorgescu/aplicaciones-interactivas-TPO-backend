@@ -78,9 +78,6 @@ module.exports = {
             return res.status(201).json({ token: loginUser, message: "Succesfully login" })
         
         })
-        .catch(error => res.staus(401).send(error))
-
-
-        
+        .catch(error => res.stauts(401).send(error))
     }
 }
