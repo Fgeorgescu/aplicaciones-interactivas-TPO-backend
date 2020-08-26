@@ -9,6 +9,9 @@ module.exports = (app) => {
     //Create a new user
     app.post('/api/users', userController.create)
 
+    //Login
+    app.post('/api/users/login', userController.loginUser)
+
     //Get one user by ID (DNI)
     app.get('/api/users/:id', userController.getUserByDNI);
 
