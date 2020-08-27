@@ -10,46 +10,24 @@ module.exports = {
         //TODO: Validar que exista el ususario
         return consultas
             .findOrCreate({
-                where:{
+                where: {
                     username: req.params.id,
                 }
             })
-            .then((consultas) => {
-                
-                    console.log("!created")
-                    var prueba = [...consultas.consulta, req.body]
-                    console.log(prueba)
-                    if (consultas.consulta === null) {
-                        console.log("null")
-
-                        consultas.consulta = [req.body];
-
-                    } else {
-                        console.log("!null")
-
-                        consultas.consulta.add(req.body)
-                    }
-                    consultas.save()
-                    res.status(201).send(consultas.consulta)
+            .then((test) => {
+                console.log(test[0])
+                if (test[0].consultas === undefined || test[0].consultas === null) {
+                    test[0].consultas = [req.body];
+                } else {
+                    test[0].consultas = [...test[0].consultas, req.body]
+                }
+                test[0].save()
+                res.status(201).send(test[0].consultas)
             })
             .catch(error => {
                 console.log(error)
                 res.status(400).send({ error: error.message })
             })
-    },
-
-
-    update(req, res) {
-        return consultas
-            .findOne({
-                username: req.params.id,
-            })
-            .then(consultas => {
-                consultas.consulta = req.body
-                consultas.save()
-                res.status(200).send(consultas.consulta)
-            })
-            .catch(error => res.status(400).send(error))
     },
 
     /**
@@ -63,12 +41,8 @@ module.exports = {
                 }
             })
             .then(consultas => {
-                if (consultas === null) {
-                    res.status(404).send({ message: "Not found" })
-                } else {
-                    res.status(200).send(consultas.consulta)
-                }
-            })
+                consultas ? res.status(200).send(consultas.consultas) : res.status(404).send({message: "Not found"});
+            }) 
             .catch(error => {
                 console.log(error)
                 res.status(400).send({ error: error.message })
