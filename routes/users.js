@@ -1,4 +1,5 @@
 const userController = require('../controllers').users;
+const historiasController = require('../controllers').historias;
 
 /**
  * Rutas para los servicios de los ususarios
@@ -17,4 +18,16 @@ module.exports = (app) => {
 
     //Get list of users
     app.get('/api/users', userController.list)
+
+
+    //Historia clínica
+    //crear
+    app.post('/api/users/:id/history', historiasController.create)
+
+    //Get one user by ID (DNI)
+    app.get('/api/users/:id/history', historiasController.findById);
+
+    //Get list of users
+    app.put('/api/users/:id/history', historiasController.update)
+    
 }
