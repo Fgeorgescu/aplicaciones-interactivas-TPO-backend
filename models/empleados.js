@@ -12,17 +12,18 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       empleados.belongsTo(models.roles, {
         as: 'roles',
-        foreignKey: 'rol_id'
+        foreignKey: 'id'
       })
       empleados.belongsTo(models.especialidades, {
         as: 'especialidades',
-        foreignKey: 'especialidad_id'
+        foreignKey: 'id'
       })
     }
   };
   empleados.init({
     id: {
       allowNull: false,
+      unique:true,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER
@@ -32,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
     apellido: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    username: {
       allowNull: false,
       type: DataTypes.STRING
     },
@@ -56,21 +61,21 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.STRING
     },
-    contraseña_hash: {
+    password: {
       allowNull: false,
       type: DataTypes.STRING
     },
-    rol_id: {
+    rol: {
       allowNull: false,
-      type: DataTypes.INTEGER
+      type: DataTypes.STRING
     },
     matricula: {
       allowNull: true,
       type: DataTypes.INTEGER
     },
-    especialidad_id: {
+    especialidad: {
       allowNull: true,
-      type: DataTypes.INTEGER
+      type: DataTypes.STRING
     },
     turnos: {
       allowNull: true,
