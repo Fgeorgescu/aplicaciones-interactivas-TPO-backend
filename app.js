@@ -54,6 +54,15 @@ app.get('/users/:id', authorization, (req, resp) => resp.status(200).json(mockUs
 app.get('/users/:id/historia', (req, resp) => resp.status(200).json(historiaMock));
 app.get('/users/:id/consultas', (req, resp) => resp.status(200).json(consultasMock));
 
+app.get('/ping', (req, resp) => {
+    var event = new Date();
+    var options = { weekday: 'long' };
+    console.log(event.toLocaleDateString('en-US', options));
+
+    resp.status(200).json(mockUser(req.params.id))
+});
+
+
 app.get('*', (req, resp) => resp.status(404).json({
     message: 'RESOURCE NOT FOUND'
 }));

@@ -7,5 +7,5 @@ module.exports = (app) => {
     require('./especialidades')(app);
     require('./roles')(app);
     require('./empleados')(app);
-
+    require('./turnos')(app);
 }
