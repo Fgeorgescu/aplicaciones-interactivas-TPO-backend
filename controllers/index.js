@@ -4,6 +4,8 @@ const roles = require("./roles")
 const empleados = require("./empleados")
 const turnos = require("./turnos")
 const historias = require("./historias")
+const medicamentos = require("./medicamentos")
+const consultas = require("./consultas")
 
 
 module.exports = {
@@ -12,5 +14,7 @@ module.exports = {
     roles,
     empleados,
     turnos,
-    historias
+    historias,
+    medicamentos,
+    consultas
 }

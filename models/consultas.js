@@ -14,7 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   consultas.init({
-    username: DataTypes.STRING,
+    username: {
+      allowNull: false,
+      unique: true,
+      type: DataTypes.STRING
+    },
     consultas: DataTypes.JSON
   }, {
     sequelize,

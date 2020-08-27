@@ -14,8 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   medicamentos.init({
-    username: DataTypes.STRING,
-    medicamentos: DataTypes.JSON
+    username: {
+      allowNull: false,
+      unique:true,
+      type: DataTypes.STRING
+    },    medicamentos: DataTypes.JSON
   }, {
     sequelize,
     modelName: 'medicamentos',
