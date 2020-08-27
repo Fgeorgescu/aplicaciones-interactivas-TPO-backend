@@ -1,9 +1,6 @@
 const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
 
-const empleados = require('../models').empleados;
-const roles = require('../models').roles;
-const especialidades = require('../models').especialidades;
+const pacientes = require('../models').pacientes;
 
 const bcrypt = require('bcrypt')
 var jwt = require('jsonwebtoken');
@@ -11,13 +8,13 @@ var jwt = require('jsonwebtoken');
 module.exports = {
 
     /**
-     * Creamos un nuevo empleado
+     * Creamos un nuevo paciente
      */
     create(req, res) {
         console.log(`promise`)
         var hashedPassword = bcrypt.hashSync(req.body.password, 8);
 
-        return empleados
+        return pacientes
             .create({
                 nombre: req.body.nombre,
                 apellido: req.body.apellido,
@@ -27,21 +24,18 @@ module.exports = {
                 telefono: req.body.telefono,
                 mail: req.body.mail ? req.body.mail : `${req.body.username}@rumano.com`,
                 password: hashedPassword,
-                rol: req.body.rol ? req.body.rol : "paciente",
-                matricula: req.body.matricula,
-                especialidad: req.body.especialidad,
             })
-            .then(empleados => {
+            .then(pacientes => {
                 var token = jwt.sign({
-                    id: empleados.id
+                    id: pacientes.id
                 }, process.env.SECRET, {
                     expiresIn: 86400 // expires in 24 hours
                 });
 
                 res.status(201).send({
                     token: token,
-                    username: empleados.username,
-                    role: empleados.rol
+                    username: pacientes.username,
+                    role: "paciente"
                 })
             })
             .catch(error => {
@@ -52,20 +46,13 @@ module.exports = {
     },
 
     /**
-     * Listamos a los empleados
+     * Listamos a los pacientes
      */
     list(_, res) {
-        return empleados
+        return pacientes
             .findAll({
-                include: [{
-                    model: roles,
-                    as: "roles"
-                }, {
-                    model: especialidades,
-                    as: "especialidades"
-                }]
             })
-            .then(empleados => res.status(200).send(empleados))
+            .then(pacientes => res.status(200).send(pacientes))
             .catch(error => res.status(400).send(error))
     },
 
@@ -73,47 +60,50 @@ module.exports = {
      * Buscar por rol
      */
     findById(req, res) {
-        return empleados
+        return pacientes
             .findAll({
                 where: {
                     username: req.params.id
                 }
             })
-            .then(empleados => res.status(200).send(empleados))
+            .then(pacientes => res.status(200).send(pacientes))
             .catch(error => res.status(400).send(error))
     },
 
-    loginEmpleado(req, res) {
+    loginPaciente(req, res) {
         // Req.Body contains the form submit values.
-        var empleadologinInfo = {
+        console.log("Paciente login")
+
+        var pacienteloginInfo = {
             username: req.body.username,
             password: req.body.password
         }
-        
         var loginEmpleado;
         // Calling the Service function with the new object from the Request Body
-        // Find the User
-        empleados.findOne({
+        // Find the User 
+        pacientes.findOne({
             where: {
-                username: empleadologinInfo.username
+                username: pacienteloginInfo.username
             }
-        }).then(empleadoDetails => {
-            var passwordIsValid = bcrypt.compareSync(empleadologinInfo.password, empleadoDetails.password);
+        }).then(pacienteDetails => {
+            console.log("Encontramos el usuario para el login")
+            console.log(pacienteDetails)
+            var passwordIsValid = bcrypt.compareSync(pacienteloginInfo.password, pacienteDetails.password);
             if (!passwordIsValid) return res.status(400).json({ status: 400, message: "Invalid username or password" })
 
             var token = jwt.sign({
-                id: empleadoDetails.id
+                id: pacienteDetails.id
             }, process.env.SECRET, {
                 expiresIn: 86400 // expires in 24 hours
             });
             loginEmpleado = token;
             return res.status(201).json({
                 token: loginEmpleado,
-                username: empleadoDetails.username,
-                role: empleadoDetails.rol,
+                username: pacienteDetails.username,
+                role: "paciente",
                 message: "Succesfully login"
             })
 
-        }).catch(error => res.status(401).send(error))
+        }).catch(error => res.stauts(401).send(error))
     }
 }

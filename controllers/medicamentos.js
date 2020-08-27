@@ -1,6 +1,5 @@
 const Sequelide = require('sequelize');
-const historias = require('../models').historias;
-const users = require('../models').users;
+const medicamentos = require('../models').medicamentos;
 
 module.exports = {
 
@@ -9,41 +8,61 @@ module.exports = {
      */
     add(req, res) {
         //TODO: Validar que exista el ususario
-        console.log(req.params)
-        return historias
-            .create({
-                username: req.params.id,
-                historia: req.body
+        return medicamentos
+            .findOrCreate({
+                where: {
+                    username: req.params.id,
+                }
             })
-            .then(historias => res.status(201).send(historias.historia))
-            .catch(error => res.status(400).send(error))
-    },
-
-
-    update(req, res) {        
-        return historias
-            .findOne({
-                username: req.params.id,
+            .then((test) => {
+                console.log(test[0])
+                if (test[0].medicamentos === undefined || test[0].medicamentos === null) {
+                    test[0].medicamentos = [req.body];
+                } else {
+                    test[0].medicamentos = [...test[0].medicamentos, req.body]
+                }
+                test[0].save()
+                res.status(201).send(test[0].medicamentos)
             })
-            .then(historias => {
-                historias.historia = req.body
-                historias.save()
-                res.status(200).send(historias.historia)
+            .catch(error => {
+                console.log(error)
+                res.status(400).send({ error: error.message })
             })
-            .catch(error => res.status(400).send(error))
     },
 
     /**
      * Buscar por id
      */
     findAll(req, res) {
-        return historias
+        return medicamentos
             .findOne({
-                username: req.params.id,
+                where: {
+                    username: req.params.id,
+                }
             })
-            .then(historias => {
-                res.status(200).send(historias.historia)
+            .then(medicamentos => {
+                medicamentos ? res.status(200).send(medicamentos.medicamentos) : res.status(404).send({message: "Not found"});
             })
-            .catch(error => res.status(400).send(error))
+            .catch(error => {
+                console.log(error)
+                res.status(400).send({ error: error.message })
+            })
+    },
+    
+    update(req, res) {
+        return medicamentos
+            .findOne({
+                where: {
+                    username: req.params.id,
+                }
+            })
+            .then(medicamentos => {
+                console.log(medicamentos)
+                res.status(200).send(medicamentos.medicamentos)
+            })
+            .catch(error => {
+                console.log(error)
+                res.status(400).send({ error: error.message })
+            })
     }
 }
