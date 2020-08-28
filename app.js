@@ -55,11 +55,7 @@ app.get('/users/:id/historia', (req, resp) => resp.status(200).json(historiaMock
 app.get('/users/:id/consultas', (req, resp) => resp.status(200).json(consultasMock));
 
 app.get('/ping', (req, resp) => {
-    var event = new Date();
-    var options = { weekday: 'long' };
-    console.log(event.toLocaleDateString('en-US', options));
-
-    resp.status(200).json(mockUser(req.params.id))
+    resp.status(200).send("pong")
 });
 
 

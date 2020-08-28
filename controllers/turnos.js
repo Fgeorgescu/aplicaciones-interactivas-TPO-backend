@@ -1,4 +1,7 @@
 const moment = require('moment')
+const Sequelide = require('sequelize');
+const { response } = require('express');
+const turnos = require('../models').turnos
 
 module.exports = {
 
@@ -6,13 +9,11 @@ module.exports = {
      * Creamos turnos. día 0 es domingo, día 6 es sábado
      */
     create(req, res) {
-        console.log(req.body)
         var iterableDate = moment()
+        var turnosGenerados = []
+        //Iteramos n semanas. 1 semana es para completar esta.
         for(var i=0; i < req.body.semanas;){
-
-            
             if(req.body.dias.includes(iterableDate.day())){
-                console.log(`asignamos los turnos del día: ${iterableDate.format("MMM Do YY")}`)
                 var inicio = iterableDate.clone()
                 inicio.hour(9)
                 inicio.minutes(0)
@@ -22,17 +23,32 @@ module.exports = {
                 final.minutes(0)
 
                 while ( inicio.isBefore(final)) {
-                    console.log(`Creamos un turnoel día y hora: ${inicio.format("MMMM Do YYYY, h:mm:ss a")}`)
 
-                    console.log(moment().format('"DD MM YYYY hh:mm'));
-
-                    inicio.add(req.body.duracion, 'm')
+                    console.log(moment().format('DD MM YYYY hh:mm'));
+                    
+                    turnosGenerados.push({
+                        doctor: req.body.doctor_username,
+                        fecha: inicio.format("DD MM YYYY"),
+                        hora: inicio.format("h:mm"),
+                        duracion: req.body.duracion,
+                        paciente: null
+                    })
+                    inicio.add(req.body.duracion, 'm') //avanzamos la duración de un turno
                 }
             } 
             iterableDate.add(1, 'd') //día siguiente    
-            if(iterableDate.day() === 6) i++ //competamos una semana
+            if(iterableDate.day() === 0) i++ //0 es domingo, completamos una semana
         }
-        res.status(201).send({message: "created"})
+        console.log("turnosGenerados")
+        console.log(turnosGenerados)
+
+        return turnos.bulkCreate(
+            turnosGenerados, 
+            { individualHooks: true }
+        ).then((values) => res.status(201).send({message: "created"}))
+        .catch(error => {
+            console.log(error)
+            res.status(400).send({error: error})})
     },
 
     update(req, res) {
@@ -40,8 +56,12 @@ module.exports = {
     },
 
     find(req, res) {
-        console.log(req.query)
-        res.status(200).send({message: "info"})
+        return turnos
+            .findAll({
+                where: req.query
+            })
+            .then(turnos => res.status(200).send(turnos))
+            .catch(error => res.status(400).send(error))
 
     }
 }

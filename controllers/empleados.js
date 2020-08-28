@@ -14,7 +14,7 @@ module.exports = {
      * Creamos un nuevo empleado
      */
     create(req, res) {
-        console.log(`promise`)
+        console.log(req.body)
         var hashedPassword = bcrypt.hashSync(req.body.password, 8);
 
         return empleados
@@ -23,7 +23,7 @@ module.exports = {
                 apellido: req.body.apellido,
                 username: req.body.username,
                 dni: req.body.dni,
-                fecha_nacimiento: req.body.fecha_nacimiento,
+                fecha_nacimiento: new Date(req.body.fecha_nacimiento),
                 telefono: req.body.telefono,
                 mail: req.body.mail ? req.body.mail : `${req.body.username}@rumano.com`,
                 password: hashedPassword,
@@ -54,16 +54,10 @@ module.exports = {
     /**
      * Listamos a los empleados
      */
-    list(_, res) {
+    list(req, res) {
         return empleados
             .findAll({
-                include: [{
-                    model: roles,
-                    as: "roles"
-                }, {
-                    model: especialidades,
-                    as: "especialidades"
-                }]
+                where: req.query
             })
             .then(empleados => res.status(200).send(empleados))
             .catch(error => res.status(400).send(error))
@@ -75,9 +69,9 @@ module.exports = {
     findById(req, res) {
         return empleados
             .findAll({
-                where: {
-                    username: req.params.id
-                }
+                where: 
+                    req.query
+                
             })
             .then(empleados => res.status(200).send(empleados))
             .catch(error => res.status(400).send(error))
