@@ -31,10 +31,12 @@ module.exports = {
                 matricula: req.body.matricula,
                 especialidad: req.body.especialidad,
             })
+            console.log("Este es mi log de secret",process.env.SECRET)
             .then(empleados => {
                 var token = jwt.sign({
                     id: empleados.id
-                }, process.env.SECRET, {
+                }, process.env.SECRET, { 
+                    
                     expiresIn: 86400 // expires in 24 hours
                 });
 
