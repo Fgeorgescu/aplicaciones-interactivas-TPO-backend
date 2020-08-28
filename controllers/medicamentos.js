@@ -41,10 +41,9 @@ module.exports = {
                 }
             })
             .then(medicamentos => {
-                medicamentos ? res.status(200).send(medicamentos.medicamentos) : res.status(404).send({message: "Not found"});
+                medicamentos ? res.status(200).send(medicamentos.medicamentos) : res.status(200).send([]);
             })
             .catch(error => {
-                console.log(error)
                 res.status(400).send({ error: error.message })
             })
     },

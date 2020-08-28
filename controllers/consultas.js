@@ -41,7 +41,7 @@ module.exports = {
                 }
             })
             .then(consultas => {
-                consultas ? res.status(200).send(consultas.consultas) : res.status(404).send({message: "Not found"});
+                consultas ? res.status(200).send(consultas.consultas) : res.status(200).send([]);
             }) 
             .catch(error => {
                 console.log(error)
