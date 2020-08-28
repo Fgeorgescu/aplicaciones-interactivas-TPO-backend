@@ -2,8 +2,6 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 const empleados = require('../models').empleados;
-const roles = require('../models').roles;
-const especialidades = require('../models').especialidades;
 
 const bcrypt = require('bcrypt')
 var jwt = require('jsonwebtoken');
@@ -68,7 +66,7 @@ module.exports = {
      */
     findById(req, res) {
         return empleados
-            .findAll({
+            .findOne({
                 where: 
                     req.query
                 

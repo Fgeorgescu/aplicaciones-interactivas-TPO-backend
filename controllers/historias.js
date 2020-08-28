@@ -1,6 +1,6 @@
 const Sequelide = require('sequelize');
 const historias = require('../models').historias;
-const users = require('../models').users;
+const empleados = require('../models').empleados;
 
 module.exports = {
 
@@ -20,7 +20,7 @@ module.exports = {
     },
 
 
-    update(req, res) {        
+    update(req, res) {
         return historias
             .findOne({
                 username: req.params.id,
@@ -37,13 +37,27 @@ module.exports = {
      * Buscar por id
      */
     findById(req, res) {
-        return historias
-            .findOne({
-                username: req.params.id,
-            })
-            .then(historias => {
-                res.status(200).send(historias.historia)
-            })
-            .catch(error => res.status(400).send(error))
+        const responseUser = empleados.findOne({
+            where: {
+                username: req.params.id
+            }
+        })
+
+        const responseHistoria = historias.findOne({
+            where: {
+                username: req.params.id
+            }
+        })
+
+        Promise.all([responseUser, responseHistoria])
+            .then(responses => {
+                //uno ambos jsons; 
+                res
+                    .status(200)
+                    .send({
+                        ...responses[1].historia,
+                        ...responses[0].dataValues
+                    })//.dataValues nos da los valores, si no incluye la metadata
+            }).catch(error => res.status(400).send(error))
     }
 }

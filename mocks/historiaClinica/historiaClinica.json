@@ -1,12 +1,6 @@
 {
-    "nombre": "Franco",
-    "apellido": "Georgescu",
-    "dni": 38427075,
-    "fecha_nacimiento": "30/06/1994",
     "genero": "masculino",
-    "telefono": "03489-625740",
     "estado_civil": "casado",
-    "sexualmenteActivo": "no",
     "obra_social": "OSDE",
     "ocupacion": "desarrollador de sofware",
     "peso": "112",
