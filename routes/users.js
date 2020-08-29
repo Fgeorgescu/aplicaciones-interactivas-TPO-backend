@@ -15,14 +15,18 @@ module.exports = (app) => {
     //Login
     app.post('/api/users/login', usersController.loginEmpleado)
 
+    //Get list of users
+    app.get('/api/users', usersController.list)
+
+    app.get('/api/users/empleados', usersController.listEmpleados)
+
     //Get one user by ID (DNI)
     app.get('/api/users/:username', usersController.findById);
 
     //Get one user by ID (DNI)
     app.put('/api/users/:username', usersController.update);
 
-    //Get list of users
-    app.get('/api/users', usersController.list)
+    
 
 
     //Historia clínica

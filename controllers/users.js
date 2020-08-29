@@ -133,7 +133,20 @@ module.exports = {
                 role: empleadoDetails.rol,
                 message: "Succesfully login"
             })
-
         }).catch(error => res.status(401).send(error))
-    }
+    },
+
+    listEmpleados(req, res) {
+        return users
+            .findAll({
+                where: {
+                    rol: ["secretaria", "doctor", "administrador"]
+                }
+            })
+            .then(users => res.status(200).send(users))
+            .catch(error => {
+                console.log(error)
+                res.status(400).send(error)
+            })
+    },
 }
