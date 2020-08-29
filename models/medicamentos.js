@@ -18,7 +18,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique:true,
       type: DataTypes.STRING
-    },    medicamentos: DataTypes.JSON
+    },    
+    medicamentos: DataTypes.JSON
   }, {
     sequelize,
     modelName: 'medicamentos',
