@@ -71,7 +71,7 @@ module.exports = {
                     req.query
                 
             })
-            .then(users => res.status(200).send(users))
+            .then(users => users ? res.status(200).send(users) : res.status(404).send({messge: `No se encontro registro del ususario`}))
             .catch(error => res.status(400).send(error))
     },
 
