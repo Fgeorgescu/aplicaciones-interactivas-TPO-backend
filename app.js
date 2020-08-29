@@ -9,9 +9,6 @@ const app = express();
 
 const authorization = require('./auth/authorization');
 
-// Para poder traer los jsons
-const fs = require('fs');
-
 
 app.use(logger('dev'));
 app.use(cors())
@@ -25,33 +22,7 @@ app.use(function(req, res, next) {
     next();    
   });
 
-
-const mockUser = (id) => {
-    return {
-        userId: id,
-        username: "fgeorgescu",
-        type: "employee",
-        mail: "fgeorgescu@uade.edu.ar"
-    }
-}
-
-let historiaMock = JSON.parse(fs.readFileSync('./mocks/historiaClinica/historiaClinica.json'));
-let consultasMock = JSON.parse(fs.readFileSync('./mocks/historiaClinica/historiaConsultas.json'));
-
-
 require('./routes')(app);
-
-app.post('/post/test', (req, resp) => {
-    let body = bodyParser.json(req.body)
-    console.log("LLEGÓ UN POST DE TEST:")
-    console.log(req.body)
-    resp.status(201).send()
-}
-);
-
-app.get('/users/:id', authorization, (req, resp) => resp.status(200).json(mockUser(req.params.id)));
-app.get('/users/:id/historia', (req, resp) => resp.status(200).json(historiaMock));
-app.get('/users/:id/consultas', (req, resp) => resp.status(200).json(consultasMock));
 
 app.get('/ping', (req, resp) => {
     resp.status(200).send("pong")
