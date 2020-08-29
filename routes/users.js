@@ -1,4 +1,4 @@
-const empleadosController = require('../controllers').empleados;
+const usersController = require('../controllers').users;
 const historiasController = require('../controllers').historias;
 const medicamentosController = require('../controllers').medicamentos;
 const consultasController = require('../controllers').consultas;
@@ -10,16 +10,16 @@ const consultasController = require('../controllers').consultas;
 module.exports = (app) => {
 
     //Create a new user
-    app.post('/api/users', empleadosController.create)
+    app.post('/api/users', usersController.create)
 
     //Login
-    app.post('/api/users/login', empleadosController.loginEmpleado)
+    app.post('/api/users/login', usersController.loginEmpleado)
 
     //Get one user by ID (DNI)
-    app.get('/api/users/:id', empleadosController.findById);
+    app.get('/api/users/:id', usersController.findById);
 
     //Get list of users
-    app.get('/api/users', empleadosController.list)
+    app.get('/api/users', usersController.list)
 
 
     //Historia clínica
