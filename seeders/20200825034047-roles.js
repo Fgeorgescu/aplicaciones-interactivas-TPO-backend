@@ -3,7 +3,7 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('roles', [{
-      rol: 'patient',
+      rol: 'paciente',
       createdAt: new Date(),
       updatedAt: new Date()
     },{

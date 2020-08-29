@@ -68,10 +68,6 @@ module.exports = (sequelize, DataTypes) => {
     especialidad: {
       allowNull: true,
       type: DataTypes.STRING
-    },
-    turnos: {
-      allowNull: true,
-      type: DataTypes.INTEGER
     }
   }, {
     sequelize,
