@@ -52,13 +52,33 @@ module.exports = {
     },
 
     update(req, res) {
-        res.status(200).send({message: "updated"})
+        return turnos.findOne({
+            where: {
+                id: req.params.id
+            }
+        }).then(turno => {
+            turno.paciente=req.body.paciente;
+            turno.save()
+            res.status(200).send({message: "updated"})
+        })
     },
 
     find(req, res) {
         return turnos
             .findAll({
                 where: req.query
+            })
+            .then(turnos => res.status(200).send(turnos))
+            .catch(error => res.status(400).send(error))
+
+    },
+
+    findById(req, res) {
+        return turnos
+            .findAll({
+                where: {
+                    id: req.params.id
+                }           
             })
             .then(turnos => res.status(200).send(turnos))
             .catch(error => res.status(400).send(error))
