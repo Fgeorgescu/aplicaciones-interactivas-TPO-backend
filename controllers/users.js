@@ -1,23 +1,33 @@
-const Sequelide = require('sequelize');
-const users = require('../models').user;
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+
+const users = require('../models').users;
+
 const bcrypt = require('bcrypt')
 var jwt = require('jsonwebtoken');
 
 module.exports = {
 
     /**
-     * Creamos un nuevo ususario
+     * Creamos un nuevo empleado
      */
     create(req, res) {
-        console.log("Acá creamos al ususario");
+        console.log(req.body)
         var hashedPassword = bcrypt.hashSync(req.body.password, 8);
-        console.log(req.body.password)
-        console.log(hashedPassword)
+
         return users
             .create({
+                nombre: req.body.nombre,
+                apellido: req.body.apellido,
                 username: req.body.username,
-                mail: req.body.email,
-                password: hashedPassword
+                dni: req.body.dni,
+                fecha_nacimiento: new Date(req.body.fecha_nacimiento),
+                telefono: req.body.telefono,
+                mail: req.body.mail ? req.body.mail : `${req.body.username}@rumano.com`,
+                password: hashedPassword,
+                rol: req.body.rol ? req.body.rol : "paciente",
+                matricula: req.body.matricula,
+                especialidad: req.body.especialidad,
             })
             .then(users => {
                 var token = jwt.sign({
@@ -26,58 +36,76 @@ module.exports = {
                     expiresIn: 86400 // expires in 24 hours
                 });
 
-                res.status(201).send({ token: token })
+                res.status(201).send({
+                    token: token,
+                    username: users.username,
+                    role: users.rol
+                })
             })
-            .catch(error => res.staus(400).send(error))
+            .catch(error => {
+                console.log("error")
+                console.log(error)
+                res.status(400).send(error)
+            })
     },
 
     /**
-     * Listamos a los ususarios
+     * Listamos a los users
      */
-    list(_, resp) {
-        console.log("Buscando clientes")
-        resp.status(200).json({message: "tenemos clientes"})
+    list(req, res) {
+        return users
+            .findAll({
+                where: req.query
+            })
+            .then(users => res.status(200).send(users))
+            .catch(error => res.status(400).send(error))
     },
 
     /**
-     * Get user por DNI
+     * Buscar por rol
      */
-    getUserByDNI(req, res) {
-        res.status(200).json({
-            user_id: req.params.id,
-            dni: 38427075,
-            username: "fgeorgescu",
-            mail: "fgeorgescu@uade.edu.ar",
-            fecha_nacimiento: "30/06/1994"
-        });
+    findById(req, res) {
+        return users
+            .findOne({
+                where: 
+                    req.query
+                
+            })
+            .then(users => users ? res.status(200).send(users) : res.status(404).send({messge: `No se encontro registro del ususario`}))
+            .catch(error => res.status(400).send(error))
     },
 
-    loginUser(req, res, next) {
+    loginEmpleado(req, res) {
         // Req.Body contains the form submit values.
-        var user = {
-            email: req.body.email,
+        var empleadologinInfo = {
+            username: req.body.username,
             password: req.body.password
         }
-        var loginUser;
+        
+        var loginEmpleado;
         // Calling the Service function with the new object from the Request Body
-        // Find the User 
+        // Find the User
         users.findOne({
-            email: user.email
-        }).then( userDetails => {
-            console.log("Encontramos el usuario para el login")
-            console.log(userDetails)
-            var passwordIsValid = bcrypt.compareSync(user.password, userDetails.password);
+            where: {
+                username: empleadologinInfo.username
+            }
+        }).then(empleadoDetails => {
+            var passwordIsValid = bcrypt.compareSync(empleadologinInfo.password, empleadoDetails.password);
             if (!passwordIsValid) return res.status(400).json({ status: 400, message: "Invalid username or password" })
-    
+
             var token = jwt.sign({
-                id: userDetails.id
+                id: empleadoDetails.id
             }, process.env.SECRET, {
                 expiresIn: 86400 // expires in 24 hours
             });
-            loginUser = token;
-            return res.status(201).json({ token: loginUser, message: "Succesfully login" })
-        
-        })
-        .catch(error => res.stauts(401).send(error))
+            loginEmpleado = token;
+            return res.status(201).json({
+                token: loginEmpleado,
+                username: empleadoDetails.username,
+                role: empleadoDetails.rol,
+                message: "Succesfully login"
+            })
+
+        }).catch(error => res.status(401).send(error))
     }
 }

@@ -1,6 +1,6 @@
 const Sequelide = require('sequelize');
 const historias = require('../models').historias;
-const empleados = require('../models').empleados;
+const users = require('../models').users;
 
 module.exports = {
 
@@ -37,7 +37,7 @@ module.exports = {
      * Buscar por id
      */
     findById(req, res) {
-        const responseUser = empleados.findOne({
+        const responseUser = users.findOne({
             where: {
                 username: req.params.id
             }
