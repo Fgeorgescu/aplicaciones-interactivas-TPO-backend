@@ -13,6 +13,7 @@ module.exports = {
      */
     create(req, res) {
         console.log(req.body)
+        const pwd = req.body.password ? req.body.password : "123456";
         var hashedPassword = bcrypt.hashSync(req.body.password, 8);
 
         return users
@@ -76,6 +77,8 @@ module.exports = {
     },
 
     loginEmpleado(req, res) {
+        console.log("Entramos")
+
         // Req.Body contains the form submit values.
         var empleadologinInfo = {
             username: req.body.username,
