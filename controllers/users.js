@@ -65,11 +65,11 @@ module.exports = {
      * Buscar por rol
      */
     findById(req, res) {
+        console.log(req.params)
         return users
             .findOne({
                 where: 
-                    req.query
-                
+                    req.params
             })
             .then(users => users ? res.status(200).send(users) : res.status(404).send({messge: `No se encontro registro del ususario`}))
             .catch(error => res.status(400).send(error))
