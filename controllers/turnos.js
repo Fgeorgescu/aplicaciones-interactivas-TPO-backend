@@ -59,7 +59,7 @@ module.exports = {
         }).then(turno => {
             turno.paciente=req.body.paciente;
             turno.save()
-            res.status(200).send({message: "updated"})
+            res.status(200).json({message:"turno guardado"})
         })
     },
 
