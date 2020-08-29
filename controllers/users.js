@@ -14,7 +14,7 @@ module.exports = {
     create(req, res) {
         console.log(req.body)
         const pwd = req.body.password ? req.body.password : "123456";
-        var hashedPassword = bcrypt.hashSync(req.body.password, 8);
+        var hashedPassword = bcrypt.hashSync(pwd, 8);
 
         return users
             .create({
@@ -45,6 +45,31 @@ module.exports = {
             })
             .catch(error => {
                 console.log("error")
+                console.log(error)
+                res.status(400).send(error)
+            })
+    },
+
+    /**
+     * Update a un user
+     */
+    update(req, res) {
+        return users
+            .findOne({
+                where: 
+                    req.params
+            })
+            .then(users => {
+                if (users) {
+                    users.dataValues = {...users.dataValues, ...req.body}
+                    console.log(users)
+                    users.save()
+                    res.status(200).send(users)
+                }  else {
+                    res.status(404).send({messge: `No se encontro registro del ususario`})
+                }
+            })
+            .catch(error => {
                 console.log(error)
                 res.status(400).send(error)
             })

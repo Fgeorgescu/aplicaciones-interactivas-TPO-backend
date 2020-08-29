@@ -18,6 +18,9 @@ module.exports = (app) => {
     //Get one user by ID (DNI)
     app.get('/api/users/:username', usersController.findById);
 
+    //Get one user by ID (DNI)
+    app.put('/api/users/:username', usersController.update);
+
     //Get list of users
     app.get('/api/users', usersController.list)
 
