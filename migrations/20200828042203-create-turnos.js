@@ -24,11 +24,16 @@ module.exports = {
         type: Sequelize.STRING
       },
       createdAt: {
+        //Esto deja el valor estático al momento de crear la tabla. 
+        //No es óptimo pero nos salva al momento de 
+        //popular la tabla con seeds
+        defaultValue: new Date(), 
         allowNull: false,
         type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
+        defaultValue: new Date(),
         type: Sequelize.DATE
       }
     });
